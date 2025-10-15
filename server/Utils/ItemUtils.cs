@@ -7,7 +7,7 @@ using SPTarkov.Server.Core.Utils;
 
 namespace SPTLeaderboard.Utils;
 [Injectable(InjectionType.Singleton)]
-public class ItemUtils(ItemHelper itemHelper, RagfairUtils ragfairUtils, HashUtil hashUtil, ISptLogger<ItemUtils> logger)
+public class ItemUtils(ItemHelper itemHelper, RagfairUtils ragfairUtils, ISptLogger<ItemUtils> logger)
 {
     public double GetTotalFleaPrice(MongoId[] templateIds)
     {
@@ -28,9 +28,9 @@ public class ItemUtils(ItemHelper itemHelper, RagfairUtils ragfairUtils, HashUti
         return templateIds.Sum(itemHelper.GetItemPrice) ?? 0;
     }
 
-    public IEnumerable<Item> GetItemInstancesAsFiR(MongoId[] templateIds)
+    public IEnumerable<Item> GetItemInstancesAsFiR(IEnumerable<MongoId> templateIds)
     { 
-        var items = templateIds.Select(item => new Item() { Template = item, Id = hashUtil.GenerateHashForData(HashingAlgorithm.SHA1, DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString()) }).ToList();
+        var items = templateIds.Select(item => new Item() { Template = item, Id = new MongoId()}).ToList();
         itemHelper.SetFoundInRaid(items);
         return items;
     }
