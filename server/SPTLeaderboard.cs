@@ -29,7 +29,7 @@ public class Logging(ISptLogger<Logging> logger) : IOnLoad
 {
     public Task OnLoad()
     {
-        logger.Info("Good mornyan everynyan");
+        logger.Success("[SPTLeaderboard] SPTLeaderboard loaded");
         return Task.CompletedTask;
     }
 }

@@ -16,7 +16,7 @@ public class InboxCallbacks(
 {
     public ValueTask<object> HandleInboxNotChecked(MongoId sessionId, string? output)
     {
-        logger.LogDebug("{SessionId} not checked", sessionId);
+        logger.LogDebug("[SPTLeaderboard] {SessionId} not checked", sessionId);
         if (!inboxChecks.TrySetSessionInboxState(sessionId, false))
         {
             logger.LogDebug("added {SessionId} to inbox checks", sessionId);

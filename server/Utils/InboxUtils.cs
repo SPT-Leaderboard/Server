@@ -35,20 +35,19 @@ public class InboxUtils(
             if (!request.IsSuccessStatusCode)
             {
                 logger.LogError(
-                    "Inbox check failed with status {ResponseStatusCode}",
+                    "[SPTLeaderboard] Inbox check failed with status {ResponseStatusCode}",
                     request.StatusCode
                 );
                 return false;
             }
 
             string response = await request.Content.ReadAsStringAsync();
-            logger.LogInformation("Received JSON {json}", response);
             CheckInboxResponseData? data = jsonUtil.Deserialize<CheckInboxResponseData>(
                 response
             );
             if (data == null)
             {
-                logger.LogError("JSON deserialized to NULL");
+                logger.LogError("[SPTLeaderboard] Inbox response JSON deserialized to NULL");
                 return false;
             }
 
@@ -66,7 +65,7 @@ public class InboxUtils(
         catch (Exception e)
         {
             logger.LogError(
-                "Error when trying to check player's inbox: {Message} (SessionID: {sessionID}) {stacktrace}",
+                "[SPTLeaderboard] Error when trying to check player's inbox: {Message} (SessionID: {sessionID}) \n {stacktrace} \n Send this to SPTLeaderboard developers",
                 [e.Message, sessionId, e.StackTrace]
             );
             return false;
