@@ -4,9 +4,9 @@ import { ILeaderboardGetItemPricesRequest } from "../models/routes/items/ILeader
 
 @injectable()
 export class LeaderboardItemCallbacks {
-    constructor(@inject("LeaderboardItemHelper") protected itemHelper: LeaderboardItemHelper) { }
+  constructor(@inject("LeaderboardItemHelper") protected itemHelper: LeaderboardItemHelper) { }
 
-    public handleItemPrices(_url: string, _info: ILeaderboardGetItemPricesRequest, _sessionId: string): number {
-        return this.itemHelper.getTotalFleaPrice(_info.templateIds);
-    }
+  public handleItemPrices(_url: string, _info: ILeaderboardGetItemPricesRequest, _sessionId: string): number {
+    return this.itemHelper.getTotalHandbookPrice(_info.templateIds);
+  }
 }

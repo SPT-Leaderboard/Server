@@ -6,31 +6,43 @@ import { IItem } from "@spt/models/eft/common/tables/IItem";
 
 @injectable()
 export class LeaderboardItemHelper {
-    constructor(
-        @inject("LeaderboardRagfairHelper") protected leaderboardRagfairHelper: LeaderboardRagfairHelper,
-        @inject("ItemHelper") protected itemHelper: ItemHelper,
-        @inject("HashUtil") protected hashUtil: HashUtil
-    ) { }
+  constructor(
+    @inject("LeaderboardRagfairHelper") protected leaderboardRagfairHelper: LeaderboardRagfairHelper,
+    @inject("ItemHelper") protected itemHelper: ItemHelper,
+    @inject("HashUtil") protected hashUtil: HashUtil
+  ) { }
 
-    public getTotalFleaPrice(templateIds: string[]): number {
-        if (templateIds.length == 0) {
-            return 0;
-        }
-
-        let totalPrice = 0;
-        for (let item of templateIds) {
-            let lowestPrice = this.leaderboardRagfairHelper.getLowestItemPrice(item);
-            totalPrice += lowestPrice;
-        }
-        return totalPrice;
+  public getTotalFleaPrice(templateIds: string[]): number {
+    if (templateIds.length == 0) {
+      return 0;
     }
 
-    public getItemInstancesAsFiR(templateIds: string[]): IItem[] {
-        let result: IItem[];
-        for (let item of templateIds) {
-            result.push({ _tpl: item, _id: this.hashUtil.generate() });
-        }
-        this.itemHelper.setFoundInRaid(result);
-        return result;
+    let totalPrice = 0;
+    for (let item of templateIds) {
+      let lowestPrice = this.leaderboardRagfairHelper.getLowestItemPrice(item);
+      totalPrice += lowestPrice;
     }
+    return totalPrice;
+  }
+
+  public getTotalHandbookPrice(templateIds: string[]): number {
+    if (templateIds.length == 0) {
+      return 0;
+    }
+
+    let totalPrice = 0;
+    for (let item of templateIds) {
+      totalPrice += this.itemHelper.getItemPrice(item);
+    }
+    return totalPrice;
+  }
+
+  public getItemInstancesAsFiR(templateIds: string[]): IItem[] {
+    let result: IItem[];
+    for (let item of templateIds) {
+      result.push({ _tpl: item, _id: this.hashUtil.generate() });
+    }
+    this.itemHelper.setFoundInRaid(result);
+    return result;
+  }
 }
